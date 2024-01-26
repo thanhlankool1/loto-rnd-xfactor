@@ -283,6 +283,10 @@ class SocketIOHandler(SingletonClass):
     async def send_lucky_number_to_user(self, sid, lucky_number, room_id):
         info_room = self.list_room.get(room_id)
         if info_room:
+            if sid != info_room.get("author").get("sid"):
+                print("bạn không phải chủ phòng")
+                return
+                
             info_room['lucky_number'].append(lucky_number)
         await self.send_msg_to_list_sid("lucky-range", [info_room.get("lucky_number")], list(info_room.get('list_sid')))
         print(info_room)
